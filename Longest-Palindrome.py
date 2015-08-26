@@ -32,6 +32,40 @@ def LongestPalindrome(s):
              j += 1
         diffLen -= 1
 
+def LongestPalindrome_2(s):
+    if not s:
+        return ""
+    tmp = '#' + '#'.join(s) + '#'
+    p = [0 for i in tmp]
+    p[0] = 1; p[1] = 2;
+    maxLen = 1        # 保存最大长度
+    idi = 1; mx = 2   # 初始化，最长回文串中心下标为1(第二个字符), 右边界下标为2
+    for i in range(2, len(tmp)):
+        j = 2 * idi - i
+        if mx > i:
+            if mx - i > p[j]:
+                p[i] = p[j]
+            else:
+                p[i] = mx - 1
+        else:
+            p[i] = 1
+        while tmp[i + p[i]] == tmp[i - p[i]]:
+            p[i] += 1
+
+        if p[i] - 1 > maxLen:
+            maxLen = p[i] - 1
+            idi = i
+            mx = idi + maxLen - 1
+
+
+
+
+
+
+
+
+
+
 print check("1", 0, 1)
 s = ''.join([str(random.randint(0, 20)) for i in range(10)])
 #s = ''.join([str(i) for i in range(10)])
