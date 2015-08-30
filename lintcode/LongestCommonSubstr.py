@@ -1,7 +1,7 @@
 import random
 import time
 
-t = time.time()
+'''
 def LongestPrefix(s1, s2):
     if not s1 or not s2:
         return 0, ""
@@ -10,11 +10,13 @@ def LongestPrefix(s1, s2):
     while i < n1 and i < n2 and s1[i] == s2[i]:
         i += 1
     return i, s1[:i]
+'''
 
+t = time.time()
 def LongestPrefix_2(s1, s2):
     if not s1 or not s2:
         return 0, ""
-    if '#' in s1 and '#' in s2:
+    if '#' in s1 and '#' in s2: # 他们的后缀不能来自于同一个串
         return 0,""
     if '#' not in s1 and '#' not in s2:
         return 0, ""
@@ -49,7 +51,6 @@ class Solution:
 
 so = Solution()
 print so.longestCommonSubstring("abcdefcdefcd", "cdef")
-
 
 
 
