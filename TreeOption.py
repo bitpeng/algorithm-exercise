@@ -1,6 +1,7 @@
 # coding:utf-8
 import copy
 from random import randint
+from collections import deque
 
 class Node(object):
     def __init__(self, x):
@@ -102,7 +103,6 @@ def InOrder(root):
 
 def Hierarchy(root):
     # write code here
-    from collections import deque
     #if root is None:
     #    return None
     if not root:
@@ -271,6 +271,7 @@ def MaxDistOfTwoNode_3(root):
 ################################################################################
 ''' 求树两个节点的最先公共祖先 '''
 def NodeInTree(root, node):
+    '''判断节点在不在二叉树中'''
     if not node:
         return True
     if not root:
@@ -283,7 +284,10 @@ def NodeInTree(root, node):
     #    ret = NodeInTree(root.right, node)
     #return ret
     return NodeInTree(root.left, node) or NodeInTree(root.right, node)
-
+'''
+    思路:判断两个节点在不在左(右)子树中，如果在，则递归处理左(右)子树；如果一个节点在左子树而另一
+    个在右子树，则返回当前根节点既可！不过这种方法包含大量重复的递归
+'''
 def CommonNode(root, n1, n2):
     if not root or not n1 or not n2:
         return None
@@ -304,13 +308,118 @@ def CommonNode_2(root, n1, n2):
         if i[0] == i[1]:
             ret = i[0]
     return ret
+
 ################################################################################
+# 求二叉树的所有路径
+def GetAllPath(root):
+    if not root:
+        return []
+    ret = []; path = []
+    GetPathOfLeaf(root, path, ret)
+    return ret
+
+def IsLeaf(root):
+    return root and root.left is None and root.right is None
+
+def GetPathOfLeaf(root, path, ret):
+    if not root:
+        return
+    path.append(root.x)
+    if IsLeaf(root):
+        ret.append(path[:])
+    if root.left: GetPathOfLeaf(root.left, path, ret)
+    if root.right: GetPathOfLeaf(root.right, path, ret)
+    path.pop()
+
+################################################################################
+# 判断二叉树是不是完全二叉树
+def CompleteBinaryTree(root):
+    if not root:
+        return True
+    dq = deque(); leafBegin = False
+    #if ValidNode(root):dq.append(root)
+    dq.append(root)
+    #while True:
+    while len(dq) > 0:
+        tmp = dq.popleft()
+        if not ValidNode(tmp):return False
+        if leafBegin:
+            if IsLeaf(tmp):pass
+            else: return False
+        else:
+            if tmp.left:
+                dq.append(tmp.left)
+            if tmp.right:
+                dq.append(tmp.right)
+        if not leafBegin:
+            leafBegin = LeafAfterThisNode(tmp)
+    return True
+
+# 只有node节点的右子树为空，则node之后的所有节点均要为叶子节点
+def LeafAfterThisNode(root):
+    if root.right is None:
+        return True
+
+# 判断节点是不是合法的二叉树节点
+# 当节点没有左子树而有右子树，节点是不合法的
+def ValidNode(node):
+    if not node:
+        return True
+    if node.left is None and node.right is not None: return False
+    #if IsLeaf(node): return True
+    return True
+
+################################################################################
+# 求二叉树第K层节点个数
+def KDepthNodes(root, K):
+    if not root or K < 1:
+        return 0
+    dq = deque()
+    dq.append((root, 1))
+    ret = 0
+    while len(dq) > 0:
+        tmp, depth = dq.popleft()
+        if depth == K:
+            ret += 1
+        elif depth > K:
+            break
+        else:
+            if tmp.left: dq.append((tmp.left, depth + 1))
+            if tmp.right: dq.append((tmp.right, depth + 1))
+    return ret
+
+################################################################################
+# 求二叉树搜索树的第K个节点
+def KthNode(pRoot, k):
+    # write code here
+    if not pRoot or k <= 0:
+        return None
+
+    stack = []; root = pRoot
+    while root or len(stack) > 0:
+        while root:
+            stack.append(root)
+            root = root.left
+        if len(stack) > 0:
+            root = stack.pop()
+            #k -= 1
+            if k == 1:
+                return root
+            k -= 1
+            root = root.right
+
+    return None
+
+################################################################################
+
+
 
 root = Node(1)
 root.left = Node(2);root.right = Node(3)
 root.left.left = Node(4); root.left.right = Node(5)
 root.right.left = Node(6); root.right.right = Node(7)
 root.left.left.right = Node(8); root.right.left.right = Node(9)
+
 #print PreOrder(root)
 #print PreOrder_2(root)
 #PreOrder_3(root)
@@ -322,16 +431,26 @@ root.left.left.right = Node(8); root.right.left.right = Node(9)
 #print MaxDistOfTwoNode(root)
 #print MaxDistOfTwoNode_2(root)
 #print MaxDistOfTwoNode_3(root)
+
 #ret = CommonNode(root, root.left.left, root.right.left)
 #ret = CommonNode(root, root.left.left.right, root.left.right)
 #ret = CommonNode(root, root.left.left.right.left, root.left.right)
-ret = CommonNode_2(root, root.left.left, root.right.left)
+#ret = CommonNode_2(root, root.left.left, root.right.left)
 #ret = CommonNode_2(root, root.left.left.right, root.left.right)
 #ret = CommonNode_2(root, root.left.left.right.left, root.left.right)
-if ret: print ret.x
-else: print None
+#if ret: print ret.x
+#else: print None
 # print NodeInTree(root.left, root.left.left), NodeInTree(root.left, root.right.left)
 # print root.left == root.left
+
+#print GetAllPath(root)
+#print CompleteBinaryTree(root)
+#for i in [1,2,3,4,5]:
+#    print KDepthNodes(root, i),
+for i in range(10):
+    tmp = KthNode(root, i)
+    if tmp: print tmp.x, 
+    else: print None, 
 
 '''树结构如下：
 
