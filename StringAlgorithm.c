@@ -72,9 +72,55 @@ void Test_Ptr_Arr()
     char s[] = "abc"; s[0] = 'b';
     //char *s = "abc"; s[0] = 'b';    # 原来C语言字符串字面量是常亮，不能更改。要想更改，只能放在数组里啊！
 }
+
 //============================================================================
+// 判断两个字符串是否是颠倒字母顺序构成的
+// 两个字符串是变位词
+bool anagram(string s, string t) {
+    // write your code here
+    int a[256];
+    if(s.size() != t.size())return false;
+    for(int i = 0; i <= 255; ++i)
+        a[i] = 0;
+    for(int i = 0;i < s.size() ;++i){
+        a[s[i]] += 1;
+        a[t[i]] -= 1;
+    }
+    for(int i = 0; i <= 255; ++i)
+        if(a[i] != 0)return false;
+    return true;
+}
 
+//============================================================================
+// 此题注意，题目没有说字符串是以空格结尾的。
+int replaceBlank(char s[], int length) {
+    // Write your code here
+    //int oriLen = length;
+    if (!s || p <= 0)
+    {
+        s[0] = '\0';
+        return 0;
+    }
+    int newLen = length;
+    for(int p = 0; p < length; ++p)
+        if (s[p] == ' ')
+            newLen += 2;
 
+    s[newLen] = '\0';
+    for(int i = length - 1, j = newLen - 1; i >= 0; --i)
+        if(s[i] != ' ')
+        {
+            s[j--] = s[i];
+            //--j;
+        }
+        else
+        {
+            s[j--] = '0';
+            s[j--] = '2';
+            s[j--] = '%';
+        }
+    return newLen;
+}
 
 int main()
 {
