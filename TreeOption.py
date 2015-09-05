@@ -411,7 +411,31 @@ def KthNode(pRoot, k):
     return None
 
 ################################################################################
+# 求二叉树是不是平衡二叉树！一次递归法避免重复递归。
 
+def depth(root):
+    if not root:return 0
+    return max(depth(root.left),depth(root.right)) + 1
+         
+def DepthAdnisBalanced(root):
+    if not root: return True, 0
+    left = DepthAdnisBalanced(root.left)
+    right = DepthAdnisBalanced(root.right)
+    rootDepth = max(left[1], right[1]) + 1
+    rootBalanced = True
+    if not left[0] or not right[0]:
+        rootBalanced = False
+    if -1 <= left[1] - right[1] <= 1:pass
+    else:rootBalanced = False
+    return rootBalanced, rootDepth
+    
+ 
+class Solution:
+    def isBalanced(self, root):
+        #result = DepthAdnisBalanced()
+        return DepthAdnisBalanced(root)[0]
+        
+################################################################################
 
 
 root = Node(1)
