@@ -56,8 +56,12 @@ def HeapSort(a):
 
 a = [random.randint(1,100) for i in range(1001)]
 #a = [60, 39, 80, 25, 66, 3, 93, 92, 11, 11, 38]
-print a
+#print a
 BuildHeap(a)
-print a
+#print a
 HeapSort(a)
 print time.time() - t
+a = [random.randint(1,10) for i in range(10)]
+b = [random.randint(1,10) for i in range(10)]
+print a, b
+
