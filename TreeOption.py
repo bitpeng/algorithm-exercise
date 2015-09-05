@@ -431,7 +431,7 @@ def BST(root):
 def depth(root):
     if not root:return 0
     return max(depth(root.left),depth(root.right)) + 1
-         
+
 def DepthAdnisBalanced(root):
     if not root: return True, 0
     left = DepthAdnisBalanced(root.left)
@@ -443,13 +443,13 @@ def DepthAdnisBalanced(root):
     if -1 <= left[1] - right[1] <= 1:pass
     else:rootBalanced = False
     return rootBalanced, rootDepth
-    
- 
+
+
 class Solution:
     def isBalanced(self, root):
         #result = DepthAdnisBalanced()
         return DepthAdnisBalanced(root)[0]
-        
+
 ################################################################################
 '''
 Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number.
