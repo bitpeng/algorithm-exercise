@@ -139,7 +139,7 @@ def GetPath(root, node, path, ret):
     path.append(root)
     if node == root:
         #print path[:]
-        ret.append(path[:])
+        #ret.append(path[:])
         ret[:] = path[:]
         #ret = copy.deepcopy(path[:])
         return
@@ -409,6 +409,19 @@ def KthNode(pRoot, k):
             root = root.right
 
     return None
+
+################################################################################
+def TreeHeight(root):
+    if not root: return 0
+    leftHeight = TreeHeight(root.left)
+    rightHeight = TreeHeight(root.right)
+    return max(leftHeight, rightHeight) + 1
+
+def BST(root):
+    if not root: return True
+    leftHeight = TreeHeight(root.left)
+    rightHeight = TreeHeight(root.right)
+    return -1 <= leftHeight - rightHeight <= 1
 
 ################################################################################
 
