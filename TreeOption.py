@@ -436,6 +436,50 @@ class Solution:
         return DepthAdnisBalanced(root)[0]
         
 ################################################################################
+'''
+Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number.
+
+An example is the root-to-leaf path 1->2->3 which represents the number 123.
+
+Find the total sum of all root-to-leaf numbers.
+
+For example,
+
+    1
+   / \
+  2   3
+The root-to-leaf path 1->2 represents the number 12.
+The root-to-leaf path 1->3 represents the number 13.
+
+Return the sum = 12 + 13 = 25.
+'''
+def IsLeaf(root):
+    return root and not root.left and not root.right
+
+def GetAllPath(root, path, ret):
+    if(not root):
+        return
+    path.append(root.val)
+    if IsLeaf(root):
+        n = int(''.join([unicode(i) for i in path]))
+        ret.append(n)
+    if root.left:
+        GetAllPath(root.left, path, ret)
+    if root.right:
+        GetAllPath(root.right, path, ret)
+    path.pop()     
+
+class Solution(object):
+    def sumNumbers(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        ret = []
+        path = []
+        GetAllPath(root, path, ret)
+        return sum(ret)
+
 
 
 root = Node(1)
