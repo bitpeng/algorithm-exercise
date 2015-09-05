@@ -411,6 +411,7 @@ def KthNode(pRoot, k):
     return None
 
 ################################################################################
+
 def TreeHeight(root):
     if not root: return 0
     leftHeight = TreeHeight(root.left)
@@ -424,6 +425,76 @@ def BST(root):
     return -1 <= leftHeight - rightHeight <= 1
 
 ################################################################################
+
+# 求二叉树是不是平衡二叉树！一次递归法避免重复递归。
+
+def depth(root):
+    if not root:return 0
+    return max(depth(root.left),depth(root.right)) + 1
+         
+def DepthAdnisBalanced(root):
+    if not root: return True, 0
+    left = DepthAdnisBalanced(root.left)
+    right = DepthAdnisBalanced(root.right)
+    rootDepth = max(left[1], right[1]) + 1
+    rootBalanced = True
+    if not left[0] or not right[0]:
+        rootBalanced = False
+    if -1 <= left[1] - right[1] <= 1:pass
+    else:rootBalanced = False
+    return rootBalanced, rootDepth
+    
+ 
+class Solution:
+    def isBalanced(self, root):
+        #result = DepthAdnisBalanced()
+        return DepthAdnisBalanced(root)[0]
+        
+################################################################################
+'''
+Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number.
+
+An example is the root-to-leaf path 1->2->3 which represents the number 123.
+
+Find the total sum of all root-to-leaf numbers.
+
+For example,
+
+    1
+   / \
+  2   3
+The root-to-leaf path 1->2 represents the number 12.
+The root-to-leaf path 1->3 represents the number 13.
+
+Return the sum = 12 + 13 = 25.
+'''
+def IsLeaf(root):
+    return root and not root.left and not root.right
+
+def GetAllPath(root, path, ret):
+    if(not root):
+        return
+    path.append(root.val)
+    if IsLeaf(root):
+        n = int(''.join([unicode(i) for i in path]))
+        ret.append(n)
+    if root.left:
+        GetAllPath(root.left, path, ret)
+    if root.right:
+        GetAllPath(root.right, path, ret)
+    path.pop()
+
+class Solution(object):
+    def sumNumbers(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        ret = []
+        path = []
+        GetAllPath(root, path, ret)
+        return sum(ret)
+
 
 
 
